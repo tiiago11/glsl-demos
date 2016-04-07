@@ -2,12 +2,9 @@
 	GLSL 4.x demo
 	Mostra o uso de:
 	-GLM - Math library
-	-Phong shading
-	-Procedural sphere generation using spheric coordinates
 	-VBO & VAO
 	-GL error detection
 	-glfwGetKeyOnce
-
 
 	August 2015 - Tiago Augusto Engel - tengel@inf.ufsm.br
 */
