@@ -3,16 +3,17 @@
 #include <GL/glew.h>
 
 #include <GLFW\glfw3.h>
-#include "Mesh.h"
+#include "Scene.h"
 #include <vector>
 #include "glslprogram.h"
 
-class Plane : public Mesh {
+class Plane : public Scene
+{
 public:
 	Plane(GLFWwindow* window, int size = 1);
 
 	// mesh virtual functions
-	void initMesh();
+	void init();
 	void update(double t);
 	void render();
 	void resize(int, int);

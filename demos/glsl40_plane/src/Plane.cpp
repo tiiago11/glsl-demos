@@ -11,7 +11,7 @@ Plane::Plane(GLFWwindow* window, int size){
 	planePos = vec3(0.0f, 0.0f, 2.5f);
 }
 
-void Plane::initMesh(){
+void Plane::init(){
 	genPlane();
 	genBuffers();
 
@@ -43,7 +43,6 @@ void Plane::update(double deltaTime){
 
 	//// matrices setup
 	modelMatrix = mat4(1.0f); // identity
-	//modelMatrix = glm::rotate(modelMatrix, glm::radians(45.0f), vec3(1.0f,0.0f,0.0f)); // rotate 45 deg
 	modelMatrix = glm::translate(modelMatrix, planePos); // translate back
 	modelViewMatrix = viewMatrix * modelMatrix;
 	modelViewProjectionMatrix = projectionMatrix * modelViewMatrix;
@@ -88,8 +87,8 @@ void Plane::resize(int x, int y){
 
 }
 
-void Plane::genPlane(){
-
+void Plane::genPlane()
+{
 	// v0 -- bottom left
 	vertices.push_back(vec3(-size, -size, 0.0f));
 	colors.push_back(vec3(1.0f, 0.0f, 0.0f));
@@ -100,11 +99,11 @@ void Plane::genPlane(){
 
 	//v2 -- top left
 	vertices.push_back(vec3(-size, size, 0.0f));
-	colors.push_back(vec3(1.0f, 1.0f, 0.0f));
+	colors.push_back(vec3(0.0f, 0.0f, 1.0f));
 
 	////v3 -- top right
 	vertices.push_back(vec3(size, size, 0.0f));
-	colors.push_back(vec3(0.0f, 1.0f, 0.0f));
+	colors.push_back(vec3(1.0f, 1.0f, 0.0f));
 	
 	// we'll have two triangles, one being v0,v1,v2 and the other v2,v3,v0
 	// triangle 1

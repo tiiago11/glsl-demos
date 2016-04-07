@@ -15,14 +15,19 @@
 #include <GLFW/glfw3.h>
 
 //Include the standard C++ headers 
-#include "Mesh.h"
+#include "Scene.h"
 #include <cstdlib>
 #include <cstdio>
 #include <string>
 #include <iostream>
 #include "Plane.h"
 
-Mesh *plane;
+
+#define WINDOW_WIDTH	1000
+#define WINDOW_HEIGHT	1000
+
+
+Scene *plane;
 GLFWwindow* window;
 bool wireframe = false;
 
@@ -34,12 +39,10 @@ char keyOnce[GLFW_KEY_LAST + 1];
      (keyOnce[KEY] ? false : (keyOnce[KEY] = true)) :   \
      (keyOnce[KEY] = false))
 
-void initializeGL()
-{
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-}
 
-void mainLoop(){
+
+void mainLoop()
+{
 	double thisTime;
 	double lastTime = glfwGetTime();
 	do
@@ -69,24 +72,22 @@ void mainLoop(){
 	} while (!glfwWindowShouldClose(window));
 }
 
-
-//Define an error callback  
+// Define an error callback  
 void errorCallback(int error, const char* description)
 {
 	fputs(description, stderr);
 	_fgetchar();
 }
-
-// key cb
+// Key callback
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
-int main(void)
+// Initialize GLFW  
+void initGLFW()
 {
-	// Initialize GLFW  
 	if (!glfwInit())
 	{
 		exit(EXIT_FAILURE);
@@ -99,7 +100,7 @@ int main(void)
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
-	window = glfwCreateWindow(1000, 1000, "GLSL4.3 + GLM + VBO + VAO", NULL, NULL);
+	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "GLSL4.3 + GLM + VBO + VAO", NULL, NULL);
 	if (!window)
 	{
 		fprintf(stderr, "Failed to open GLFW window.\n");
@@ -107,11 +108,15 @@ int main(void)
 		system("pause");
 		exit(EXIT_FAILURE);
 	}
-
+}
+void initCallbacks()
+{
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetErrorCallback(errorCallback);
-
+}
+void initGLEW()
+{
 	// Initialize GLEW
 	glewExperimental = GL_TRUE; //ensures that all extensions with valid entry points will be exposed.
 	GLenum err = glewInit();
@@ -119,19 +124,33 @@ int main(void)
 	{
 		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
 		system("pause");
-		return EXIT_FAILURE;
+		exit(EXIT_FAILURE);
 	}
-
-	plane = new Plane(window, 1);
-	plane->initMesh();
-
-	initializeGL();
-
-	mainLoop();
-
-	//Close OpenGL window and terminate GLFW  
+}
+void initializeGL()
+{
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+}
+// Close OpenGL window and terminate GLFW  
+void closeApplication()
+{
 	glfwDestroyWindow(window);
 	glfwTerminate();
+}
+
+int main(void)
+{
+	initGLFW();
+	initCallbacks();
+	initGLEW();
+	initializeGL();
+
+	plane = new Plane(window, 1);
+	plane->init();
+
+	std::cout << std::endl << "Q: wireframe" << std::endl;
+
+	mainLoop();
 
 	exit(EXIT_SUCCESS);
 }

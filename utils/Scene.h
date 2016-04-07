@@ -1,15 +1,15 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-class Mesh
+class Scene
 {
 public:
-	Mesh() { }
+	Scene() { }
 
 	/**
 	Load textures, initialize shaders, etc.
 	*/
-	virtual void initMesh() = 0;
+	virtual void init() = 0;
 
 	/**
 	This is called prior to every frame.  Use this
