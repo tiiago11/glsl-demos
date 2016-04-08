@@ -21,12 +21,11 @@ public:
 private:
 	void genPlane();
 	void genBuffers();
+	void processInput();
 
 	GLuint vaoID;
 	int size;
 	std::vector<vec3> vertices;
-	std::vector<vec3> normals;
-	std::vector<vec3> colors;
 	std::vector<unsigned int> indices;
 
 	GLSLProgram shader;
@@ -39,4 +38,7 @@ private:
 	glm::mat4 modelViewMatrix;
 
 	vec3 planePos;
+
+	int inner = 1;
+	vec4 outer;
 };
