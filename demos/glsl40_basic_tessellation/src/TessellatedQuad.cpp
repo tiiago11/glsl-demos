@@ -1,17 +1,19 @@
-#include "Plane.h"
+#include "TessellatedQuad.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 #include <iostream>
 
 using namespace std;
 
-TessellatedQuad::TessellatedQuad(GLFWwindow* window, int size){
+TessellatedQuad::TessellatedQuad(GLFWwindow* window, int size)
+{
 	this->size = size;
 	this->window = window;
 	planePos = vec3(0.0f, 0.0f, 2.5f);
 }
 
-void TessellatedQuad::init(){
+void TessellatedQuad::init()
+{
 	genPlane();
 	genBuffers();
 
@@ -25,8 +27,10 @@ void TessellatedQuad::init(){
 
 	// load shaders
 	try {
-		shader.compileShader("shader/glsl40_plane.vert");
-		shader.compileShader("shader/glsl40_plane.frag");
+		shader.compileShader("shader/glsl40_basic_tess.vert", GLSLShader::VERTEX);
+		shader.compileShader("shader/glsl40_basic_tess.frag", GLSLShader::FRAGMENT);
+		shader.compileShader("shader/glsl40_basic_tess.tcs", GLSLShader::TESS_CONTROL);
+		shader.compileShader("shader/glsl40_basic_tess.tes", GLSLShader::TESS_EVALUATION);
 
 		shader.link();
 		shader.use();
@@ -39,8 +43,8 @@ void TessellatedQuad::init(){
 	shader.printActiveAttribs();
 }
 
-void TessellatedQuad::update(double deltaTime){
-
+void TessellatedQuad::update(double deltaTime)
+{
 	//// matrices setup
 	modelMatrix = mat4(1.0f); // identity
 	modelMatrix = glm::translate(modelMatrix, planePos); // translate back
@@ -51,16 +55,18 @@ void TessellatedQuad::update(double deltaTime){
 	shader.setUniform("MVP", modelViewProjectionMatrix); //ModelViewProjection
 }
 
-void TessellatedQuad::render(){
+void TessellatedQuad::render()
+{
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glBindVertexArray(vaoID);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLubyte *)NULL);
+	glPatchParameteri(GL_PATCH_VERTICES, 4);
+	glDrawElements(GL_PATCHES, indices.size(), GL_UNSIGNED_INT, (GLubyte *)NULL);
 	glBindVertexArray(0);
 }
 
-void TessellatedQuad::genBuffers(){
-
+void TessellatedQuad::genBuffers()
+{
 	glGenVertexArrays(1, &vaoID);
 	glBindVertexArray(vaoID);
 
@@ -83,7 +89,8 @@ void TessellatedQuad::genBuffers(){
 	glBindVertexArray(0);
 }
 
-void TessellatedQuad::resize(int x, int y){
+void TessellatedQuad::resize(int x, int y)
+{
 
 }
 
@@ -110,10 +117,10 @@ void TessellatedQuad::genPlane()
 	indices.push_back(0);
 	indices.push_back(1);
 	indices.push_back(2);
-
-	//// triangle 2
-	indices.push_back(2);
-	indices.push_back(1);
 	indices.push_back(3);
 
+	//// triangle 2
+	//indices.push_back(2);
+	//indices.push_back(1);
+	//indices.push_back(3);
 }

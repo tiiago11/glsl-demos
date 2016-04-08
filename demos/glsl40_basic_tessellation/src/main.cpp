@@ -1,15 +1,3 @@
-/*
-	GLSL 4.x demo
-	Mostra o uso de:
-	-GLM - Math library
-	-VBO & VAO
-	-GL error detection
-	-glfwGetKeyOnce
-
-	August 2015 - Tiago Augusto Engel - tengel@inf.ufsm.br
-*/
-
-
 //Include GLEW - always first 
 #include "GL/glew.h"
 #include <GLFW/glfw3.h>
@@ -20,17 +8,15 @@
 #include <cstdio>
 #include <string>
 #include <iostream>
-#include "Plane.h"
+#include "TessellatedQuad.h"
 
 
 #define WINDOW_WIDTH	1000
 #define WINDOW_HEIGHT	1000
 
 
-Scene *plane;
+Scene *tessellatedQuad;
 GLFWwindow* window;
-bool wireframe = false;
-
 
 //add to glfwGetKey that gets the pressed key only once (not several times)
 char keyOnce[GLFW_KEY_LAST + 1];
@@ -40,31 +26,18 @@ char keyOnce[GLFW_KEY_LAST + 1];
      (keyOnce[KEY] = false))
 
 
-
 void mainLoop()
 {
 	double thisTime;
 	double lastTime = glfwGetTime();
 	do
 	{
-		
-		// toggle wireframe
-		if (glfwGetKeyOnce(window, 'Q')){
-			wireframe = !wireframe;
-			if (wireframe){
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			}
-			else{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			}
-		}
-
 		// set deltatime and call update
 		thisTime = glfwGetTime();
-		plane->update(thisTime - lastTime);
+		tessellatedQuad->update(thisTime - lastTime);
 		lastTime = thisTime;
 
-		plane->render();
+		tessellatedQuad->render();
 
 		glfwSwapBuffers(window);
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...  
@@ -130,6 +103,7 @@ void initGLEW()
 void initializeGL()
 {
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 // Close OpenGL window and terminate GLFW  
 void closeApplication()
@@ -145,10 +119,8 @@ int main(void)
 	initGLEW();
 	initializeGL();
 
-	plane = new TessellatedQuad(window, 1);
-	plane->init();
-
-	std::cout << std::endl << "Q: wireframe" << std::endl;
+	tessellatedQuad = new TessellatedQuad(window, 1);
+	tessellatedQuad->init();
 
 	mainLoop();
 
