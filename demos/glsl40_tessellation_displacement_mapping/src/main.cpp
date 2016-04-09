@@ -1,12 +1,3 @@
-// Basic Tessellation Demo
-//
-// Este programa é uma demonstrção da utilização de Tessellation em OpenGL.
-// Um quadrado é enviado para GPU e subdividido em tempo real. O usuário pode
-// controlar o número de subdivisões utilizando as teclas 'Q', 'A', 'W', 'S', 
-//'E', 'D', 'R', 'F', 'T' e 'G'.
-//
-// Abril 2016 - Alex Frasson - afrasson@inf.ufsm.br
-
 //Include GLEW - always first 
 #include "GL/glew.h"
 #include <GLFW/glfw3.h>
@@ -24,10 +15,15 @@
 #define WINDOW_HEIGHT	1000
 
 
-using namespace std;
-
 Scene *tessellatedQuad;
 GLFWwindow* window;
+
+//add to glfwGetKey that gets the pressed key only once (not several times)
+char keyOnce[GLFW_KEY_LAST + 1];
+#define glfwGetKeyOnce(WINDOW, KEY)             \
+    (glfwGetKey(WINDOW, KEY) ?              \
+     (keyOnce[KEY] ? false : (keyOnce[KEY] = true)) :   \
+     (keyOnce[KEY] = false))
 
 
 void mainLoop()
@@ -125,19 +121,6 @@ int main(void)
 
 	tessellatedQuad = new TessellatedQuad(window, 1);
 	tessellatedQuad->init();
-
-	cout << endl << "Q: increase inner 0" << endl;
-	cout << "A: decrease inner 0" << endl;
-	cout << endl << "W: increase inner 1" << endl;
-	cout << "S: decrease inner 1" << endl;
-	cout << endl << "E: increase outer 0" << endl;
-	cout << "D: decrease outer 0" << endl;
-	cout << endl << "R: increase outer 1" << endl;
-	cout << "F: decrease outer 1" << endl;
-	cout << endl << "T: increase outer 2" << endl;
-	cout << "G: decrease outer 2" << endl;
-	cout << endl << "Y: increase outer 3" << endl;
-	cout << "H: decrease outer 3" << endl;
 
 	mainLoop();
 
