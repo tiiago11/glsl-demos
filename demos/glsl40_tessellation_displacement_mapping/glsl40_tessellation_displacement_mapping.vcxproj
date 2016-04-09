@@ -19,28 +19,29 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="README.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\utils\glslprogram.cpp" />
+    <ClCompile Include="..\..\utils\GLUtils.cpp" />
+    <ClCompile Include="..\..\utils\TextureManager.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\TessellatedQuad.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\utils\GLUtils.h" />
+    <ClInclude Include="..\..\utils\TextureManager.h" />
     <ClInclude Include="src\TessellatedQuad.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\glsl40_basic_tess.frag">
+    <None Include="shader\glsl40_tess_disp_mapp.frag">
       <FileType>Document</FileType>
     </None>
-    <None Include="shader\glsl40_basic_tess.tcs" />
-    <None Include="shader\glsl40_basic_tess.tes" />
-    <None Include="shader\glsl40_basic_tess.vert">
+    <None Include="shader\glsl40_tess_disp_mapp.tcs" />
+    <None Include="shader\glsl40_tess_disp_mapp.tes" />
+    <None Include="shader\glsl40_tess_disp_mapp.vert">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{798AFC7A-09D6-4B5B-ADB3-4E54F653FB67}</ProjectGuid>
+    <ProjectGuid>{CA7280EE-9721-4937-AE93-2D9FF2B50AD8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>OculusWorldDemo</RootNamespace>
     <ProjectName>glsl40_tessellation_displacement_mapping</ProjectName>
@@ -130,7 +131,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glew32.lib;glu32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glew32.lib;glu32.lib;opengl32.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
       <Command>
@@ -184,7 +185,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glew32.lib;glu32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glew32.lib;glu32.lib;opengl32.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
       <Command>
