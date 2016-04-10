@@ -5,9 +5,11 @@
 //
 // Abril 2016 - Alex Frasson - afrasson@inf.ufsm.br
 
-#version 400
+#version 450
 
 layout(location = 0) out vec4 FragColor;
+
+//in vec2 teTexCoord;
 
 void main()
 {

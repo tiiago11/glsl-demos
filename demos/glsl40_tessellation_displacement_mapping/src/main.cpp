@@ -74,7 +74,7 @@ void initGLFW()
 	}
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -130,16 +130,16 @@ int main(void)
 	initCallbacks();
 	initGLEW();
 	initializeGL();
-
+/*
 	// Get a TextureManager's instance
 	texManager = TextureManager::Inst();
 	// Load our color texture with Id 0
-	if (!texManager->LoadTexture("resources/ps_height_4k.png", 0))
-		std::cout << "Failed to load texture." << std::endl;
+	if (!texManager->LoadTexture("resources/old_bricks_sharp_diff_COLOR.png", 0))
+		cout << "Failed to load texture." << endl;
 	// Load our displacement texture with Id 1
-	//if (!texManager->LoadTexture("resources/old_bricks_sharp_diff_DISP.png", 1))
-	//	std::cout << "Failed to load texture." << std::endl;
-
+	if (!texManager->LoadTexture("resources/old_bricks_sharp_diff_DISP.png", 1))
+		cout << "Failed to load texture." << endl;
+		*/
 	tessellatedQuad = new TessellatedQuad(window, 1);
 	tessellatedQuad->init();
 

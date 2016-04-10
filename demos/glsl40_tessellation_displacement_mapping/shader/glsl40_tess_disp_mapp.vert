@@ -5,11 +5,17 @@
 //
 // Abril 2016 - Alex Frasson - afrasson@inf.ufsm.br
 
-#version 400
+#version 450
 
 layout(location = 0) in vec3 VertexPosition;
+layout(location = 1) in vec2 TexCoord;
+
+out vec2 vTexCoord;
+out vec4 vPosition;
 
 void main()
 {
-	gl_Position = vec4(VertexPosition, 1.0);
+	vTexCoord = TexCoord;
+	//gl_Position = vec4(VertexPosition, 1.0);
+	vPosition = vec4(VertexPosition, 1.0);
 }

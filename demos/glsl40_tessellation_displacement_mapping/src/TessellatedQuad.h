@@ -26,6 +26,7 @@ private:
 	GLuint vaoID;
 	int size;
 	std::vector<vec3> vertices;
+	std::vector<vec2> texcoord;
 	std::vector<unsigned int> indices;
 
 	GLSLProgram shader;

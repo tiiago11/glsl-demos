@@ -11,19 +11,28 @@
 //
 // Abril 2016 - Alex Frasson - afrasson@inf.ufsm.br
 
-#version 400
+#version 450
 
 layout(vertices = 4) out;
 
 uniform vec2 Inner;
 uniform vec4 Outer;
 
-#define ID gl_InvocationID
+in vec2 vTexCoord[];
+in vec4 vPosition[];
+out vec2 tcTexCoord[];
+out vec4 tcPosition[];
+
+//#define ID gl_InvocationID
 
 void main()
 {
+	vec2 v = vTexCoord[0];
+	tcTexCoord[gl_InvocationID] = v;
+	//tcTexCoord[ID] = vTexCoord[ID];
 	// Precisamos passar adiante todos os vértices do Patch
-	gl_out[ID].gl_Position = gl_in[ID].gl_Position;
+	//gl_out[ID].gl_Position = gl_in[ID].gl_Position;
+	tcPosition[gl_InvocationID] = vPosition[gl_InvocationID];
 
 	// Vamos modificar o inner e outer apenas para o primeiro vértice do Patch
 	if (gl_InvocationID == 0)
