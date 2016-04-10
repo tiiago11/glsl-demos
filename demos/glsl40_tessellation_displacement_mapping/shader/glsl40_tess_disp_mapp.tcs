@@ -11,37 +11,34 @@
 //
 // Abril 2016 - Alex Frasson - afrasson@inf.ufsm.br
 
-#version 450
+#version 400
 
 layout(vertices = 4) out;
 
-uniform vec2 Inner;
-uniform vec4 Outer;
+uniform int TessLevel;
 
 in vec2 vTexCoord[];
 in vec4 vPosition[];
+
 out vec2 tcTexCoord[];
 out vec4 tcPosition[];
 
-//#define ID gl_InvocationID
+#define ID gl_InvocationID
 
 void main()
 {
-	vec2 v = vTexCoord[0];
-	tcTexCoord[gl_InvocationID] = v;
-	//tcTexCoord[ID] = vTexCoord[ID];
-	// Precisamos passar adiante todos os vértices do Patch
-	//gl_out[ID].gl_Position = gl_in[ID].gl_Position;
-	tcPosition[gl_InvocationID] = vPosition[gl_InvocationID];
+	// Precisamos passar adiante os vértices e suas informações
+	tcTexCoord[ID] = vTexCoord[ID];
+	tcPosition[ID] = vPosition[ID];
 
 	// Vamos modificar o inner e outer apenas para o primeiro vértice do Patch
-	if (gl_InvocationID == 0)
+	if (ID == 0)
 	{
-		gl_TessLevelOuter[0] = float(Outer[0]);
-		gl_TessLevelOuter[1] = float(Outer[1]);
-		gl_TessLevelOuter[2] = float(Outer[2]);
-		gl_TessLevelOuter[3] = float(Outer[3]);
-		gl_TessLevelInner[0] = float(Inner[0]);
-		gl_TessLevelInner[1] = float(Inner[1]);
+		gl_TessLevelOuter[0] = float(TessLevel);
+		gl_TessLevelOuter[1] = float(TessLevel);
+		gl_TessLevelOuter[2] = float(TessLevel);
+		gl_TessLevelOuter[3] = float(TessLevel);
+		gl_TessLevelInner[0] = float(TessLevel);
+		gl_TessLevelInner[1] = float(TessLevel);
 	}
 }

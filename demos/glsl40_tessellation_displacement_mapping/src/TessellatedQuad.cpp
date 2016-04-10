@@ -17,7 +17,7 @@ TessellatedQuad::TessellatedQuad(GLFWwindow* window, int size)
 {
 	this->size = size;
 	this->window = window;
-	planePos = vec3(0.0f, 0.0f, 2.5f);
+	planePos = vec3(0.0f, 0.0f, 1.0f);
 }
 
 void TessellatedQuad::init()
@@ -31,7 +31,11 @@ void TessellatedQuad::init()
 		vec3(0.0f, 0.0f, -1.0f), //eye
 		vec3(0.0f, 0.0f, 0.0f), //center
 		vec3(0.0f, 1.0f, 0.0f)); //up
-	projectionMatrix = glm::perspective(glm::radians(60.0f), 1.0f, 0.1f, 100.0f);
+	
+	int w, h;
+	glfwGetFramebufferSize(window, &w, &h);
+
+	projectionMatrix = glm::perspective(glm::radians(75.0f), (float)w/(float)h, 0.1f, 100.0f);
 
 	// load shaders
 	try {
@@ -49,8 +53,6 @@ void TessellatedQuad::init()
 		exit(EXIT_FAILURE);
 	}
 	shader.printActiveAttribs();
-
-	outer = vec4(1.0f);
 }
 
 void TessellatedQuad::update(double deltaTime)
@@ -58,104 +60,69 @@ void TessellatedQuad::update(double deltaTime)
 	processInput();
 
 	//// matrices setup
-	modelMatrix = mat4(1.0f); // identity
+	modelMatrix = mat4(); // identity
 	modelMatrix = glm::translate(modelMatrix, planePos); // translate back
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(rot), vec3(0.0f, 1.0f, 0.0f));
+	
 	modelViewMatrix = viewMatrix * modelMatrix;
 	modelViewProjectionMatrix = projectionMatrix * modelViewMatrix;
 
 	// set var MVP on the shader
 	shader.setUniform("MVP", modelViewProjectionMatrix); //ModelViewProjection
 
-	shader.setUniform("Inner", inner);
-	shader.setUniform("Outer", outer);
+	shader.setUniform("TessLevel", tessLevel);
+
+	shader.setUniform("displacementmapSampler", 1);
+	shader.setUniform("colorTextureSampler", 0);
+	
 }
 
 void TessellatedQuad::processInput()
 {
-	// Inner tessellation 0
-	if (glfwGetKeyOnce(window, 'Q'))
+	// Tessellation Level
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		inner[0]++;
-		if (inner[0] > 64)
-			inner[0] = 64;
+		tessLevel++;
+		if (tessLevel > 64)
+			tessLevel = 64;
 	}
-	if (glfwGetKeyOnce(window, 'A'))
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		inner[0]--;
-		if (inner[0] < 1)
-			inner[0] = 1;
+		tessLevel--;
+		if (tessLevel < 1)
+			tessLevel = 1;
 	}
-	// Inner tessellation 0
-	if (glfwGetKeyOnce(window, 'W'))
+
+	// Rotation on Y axis
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 	{
-		inner[1]++;
-		if (inner[1] > 64)
-			inner[1] = 64;
+		rot++;
+		if (rot > 360)
+			rot = 0;
 	}
-	if (glfwGetKeyOnce(window, 'S'))
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		inner[1]--;
-		if (inner[1] < 1)
-			inner[1] = 1;
+		rot--;
+		if (rot < 0)
+			rot = 360;
 	}
-	// Outer tessellation 0
-	if (glfwGetKeyOnce(window, 'E'))
-	{
-		outer[0]++;
-		if (outer[0] > 64)
-			outer[0] = 64;
-	}
-	if (glfwGetKeyOnce(window, 'D'))
-	{
-		outer[0]--;
-		if (outer[0] < 1)
-			outer[0] = 1;
-	}
-	// Outer tessellation 1
-	if (glfwGetKeyOnce(window, 'R'))
-	{
-		outer[1]++;
-		if (outer[1] > 64)
-			outer[1] = 64;
-	}
-	if (glfwGetKeyOnce(window, 'F'))
-	{
-		outer[1]--;
-		if (outer[1] < 1)
-			outer[1] = 1;
-	}
-	// Outer tessellation 2
-	if (glfwGetKeyOnce(window, 'T'))
-	{
-		outer[2]++;
-		if (outer[2] > 64)
-			outer[2] = 64;
-	}
-	if (glfwGetKeyOnce(window, 'G'))
-	{
-		outer[2]--;
-		if (outer[2] < 1)
-			outer[2] = 1;
-	}
-	// Outer tessellation 3
-	if (glfwGetKeyOnce(window, 'Y'))
-	{
-		outer[3]++;
-		if (outer[3] > 64)
-			outer[3] = 64;
-	}
-	if (glfwGetKeyOnce(window, 'H'))
-	{
-		outer[3]--;
-		if (outer[3] < 1)
-			outer[3] = 1;
+
+	// toggle wireframe
+	if (glfwGetKeyOnce(window, 'E')) {
+		wireframe = !wireframe;
+		if (wireframe) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
+		else {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
 	}
 }
 
 void TessellatedQuad::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	/*
+	
 	// Bind both textures
 	// Color
 	glEnable(GL_TEXTURE_2D);
@@ -165,7 +132,7 @@ void TessellatedQuad::render()
 	glEnable(GL_TEXTURE_2D);
 	glActiveTextureARB(GL_TEXTURE1);
 	TextureManager::Inst()->BindTexture(1);
-	*/
+	
 	glBindVertexArray(vaoID);
 	glPatchParameteri(GL_PATCH_VERTICES, 4);
 	glDrawElements(GL_PATCHES, indices.size(), GL_UNSIGNED_INT, (GLubyte *)NULL);
@@ -187,9 +154,8 @@ void TessellatedQuad::genBuffers()
 
 	glBindBuffer(GL_ARRAY_BUFFER, handle[1]);
 	glBufferData(GL_ARRAY_BUFFER, texcoord.size() * sizeof(vec2), (GLvoid*)&texcoord[0], GL_STATIC_DRAW);
-	glVertexAttribPointer((GLuint)0, 2, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
+	glVertexAttribPointer((GLuint)1, 2, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
 	glEnableVertexAttribArray(1);  // TexCoord -> layout 1 in the VS
-
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle[2]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), (GLvoid*)&indices[0], GL_STATIC_DRAW);

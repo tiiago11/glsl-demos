@@ -47,7 +47,6 @@ void mainLoop()
 	double lastTime = glfwGetTime();
 	do
 	{
-		
 		// toggle wireframe
 		if (glfwGetKeyOnce(window, 'Q')){
 			wireframe = !wireframe;

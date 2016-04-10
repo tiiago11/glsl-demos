@@ -38,6 +38,7 @@ void mainLoop()
 	{
 		// Check for OpenGL errors
 		GLUtils::checkForOpenGLError(__FILE__, __LINE__);
+
 		// set deltatime and call update
 		thisTime = glfwGetTime();
 		tessellatedQuad->update(thisTime - lastTime);
@@ -74,7 +75,7 @@ void initGLFW()
 	}
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -130,7 +131,7 @@ int main(void)
 	initCallbacks();
 	initGLEW();
 	initializeGL();
-/*
+
 	// Get a TextureManager's instance
 	texManager = TextureManager::Inst();
 	// Load our color texture with Id 0
@@ -139,22 +140,17 @@ int main(void)
 	// Load our displacement texture with Id 1
 	if (!texManager->LoadTexture("resources/old_bricks_sharp_diff_DISP.png", 1))
 		cout << "Failed to load texture." << endl;
-		*/
+		
 	tessellatedQuad = new TessellatedQuad(window, 1);
 	tessellatedQuad->init();
 
-	cout << endl << "Q: increase inner 0" << endl;
-	cout << "A: decrease inner 0" << endl;
-	cout << endl << "W: increase inner 1" << endl;
-	cout << "S: decrease inner 1" << endl;
-	cout << endl << "E: increase outer 0" << endl;
-	cout << "D: decrease outer 0" << endl;
-	cout << endl << "R: increase outer 1" << endl;
-	cout << "F: decrease outer 1" << endl;
-	cout << endl << "T: increase outer 2" << endl;
-	cout << "G: decrease outer 2" << endl;
-	cout << endl << "Y: increase outer 3" << endl;
-	cout << "H: decrease outer 3" << endl;
+	cout << endl << "Q: rotate around Y axis" << endl;
+	cout << "A:  rotate around Y axis" << endl;
+
+	cout << endl << "W: increase tess level" << endl;
+	cout << "S: decrease tess level" << endl;
+
+	cout << endl << "E: toggle wireframe" << endl;
 
 	mainLoop();
 
