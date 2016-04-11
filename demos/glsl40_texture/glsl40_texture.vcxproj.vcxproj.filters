@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\utils\Bmp.cpp" />
+    <ClCompile Include="..\..\utils\glslprogram.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Plane.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Plane.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader\glsl40_texture.frag" />
+    <None Include="shader\glsl40_texture.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="README.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{4b995bb6-a73c-4708-893d-5270b9e4cd0f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
