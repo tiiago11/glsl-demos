@@ -26,6 +26,7 @@ private:
 	GLuint vaoID;
 	int size;
 	std::vector<vec3> vertices;
+	std::vector<vec2> texcoord;
 	std::vector<unsigned int> indices;
 
 	GLSLProgram shader;
@@ -38,7 +39,8 @@ private:
 	glm::mat4 modelViewMatrix;
 
 	vec3 planePos;
+	float rot = 30.0f;
+	bool wireframe = false;
 
-	int inner = 1;
-	vec4 outer;
+	int tessLevel = 1;
 };

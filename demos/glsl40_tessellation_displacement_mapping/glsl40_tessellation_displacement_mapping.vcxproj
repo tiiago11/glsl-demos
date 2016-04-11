@@ -19,29 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="README.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\utils\glslprogram.cpp" />
+    <ClCompile Include="..\..\utils\GLUtils.cpp" />
+    <ClCompile Include="..\..\utils\TextureManager.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Plane.cpp" />
+    <ClCompile Include="src\TessellatedQuad.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Plane.h" />
+    <ClInclude Include="..\..\utils\GLUtils.h" />
+    <ClInclude Include="..\..\utils\TextureManager.h" />
+    <ClInclude Include="src\TessellatedQuad.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\glsl40_plane.frag">
+    <None Include="shader\glsl40_tess_disp_mapp.frag">
       <FileType>Document</FileType>
     </None>
-    <None Include="shader\glsl40_plane.vert">
+    <None Include="shader\glsl40_tess_disp_mapp.tcs" />
+    <None Include="shader\glsl40_tess_disp_mapp.tes" />
+    <None Include="shader\glsl40_tess_disp_mapp.vert">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D6B0A0FD-080A-400F-9D68-913E88E79C91}</ProjectGuid>
+    <ProjectGuid>{CA7280EE-9721-4937-AE93-2D9FF2B50AD8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>OculusWorldDemo</RootNamespace>
-    <ProjectName>glsl40_plane</ProjectName>
+    <ProjectName>glsl40_tessellation_displacement_mapping</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

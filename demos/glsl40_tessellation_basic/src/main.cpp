@@ -1,44 +1,34 @@
-/*
-	GLSL 4.x demo
-	Mostra o uso de:
-	-GLM - Math library
-	-VBO & VAO
-	-GL error detection
-	-glfwGetKeyOnce
-
-	August 2015 - Tiago Augusto Engel - tengel@inf.ufsm.br
-*/
-
+// Basic Tessellation Demo
+//
+// Este programa é uma demonstrção da utilização de Tessellation em OpenGL.
+// Um quadrado é enviado para GPU e subdividido em tempo real. O usuário pode
+// controlar o número de subdivisões utilizando as teclas 'Q', 'A', 'W', 'S', 
+//'E', 'D', 'R', 'F', 'T' e 'G'.
+//
+// Abril 2016 - Alex Frasson - afrasson@inf.ufsm.br
 
 //Include GLEW - always first 
 #include "GL/glew.h"
 #include <GLFW/glfw3.h>
 
 //Include the standard C++ headers 
+#include "GLUtils.h"
 #include "Scene.h"
 #include <cstdlib>
 #include <cstdio>
 #include <string>
 #include <iostream>
-#include "Plane.h"
+#include "TessellatedQuad.h"
 
 
 #define WINDOW_WIDTH	1000
 #define WINDOW_HEIGHT	1000
 
 
-Scene *plane;
+using namespace std;
+
+Scene *tessellatedQuad;
 GLFWwindow* window;
-bool wireframe = false;
-
-
-//add to glfwGetKey that gets the pressed key only once (not several times)
-char keyOnce[GLFW_KEY_LAST + 1];
-#define glfwGetKeyOnce(WINDOW, KEY)             \
-    (glfwGetKey(WINDOW, KEY) ?              \
-     (keyOnce[KEY] ? false : (keyOnce[KEY] = true)) :   \
-     (keyOnce[KEY] = false))
-
 
 
 void mainLoop()
@@ -47,23 +37,14 @@ void mainLoop()
 	double lastTime = glfwGetTime();
 	do
 	{
-		// toggle wireframe
-		if (glfwGetKeyOnce(window, 'Q')){
-			wireframe = !wireframe;
-			if (wireframe){
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			}
-			else{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			}
-		}
-
+		// Check for OpenGL errors
+		GLUtils::checkForOpenGLError(__FILE__, __LINE__);
 		// set deltatime and call update
 		thisTime = glfwGetTime();
-		plane->update(thisTime - lastTime);
+		tessellatedQuad->update(thisTime - lastTime);
 		lastTime = thisTime;
 
-		plane->render();
+		tessellatedQuad->render();
 
 		glfwSwapBuffers(window);
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...  
@@ -87,6 +68,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 // Initialize GLFW  
 void initGLFW()
 {
+	cout << "Initializing GLFW..." << endl;
 	if (!glfwInit())
 	{
 		exit(EXIT_FAILURE);
@@ -116,6 +98,7 @@ void initCallbacks()
 }
 void initGLEW()
 {
+	cout << "Initializing GLEW..." << endl;
 	// Initialize GLEW
 	glewExperimental = GL_TRUE; //ensures that all extensions with valid entry points will be exposed.
 	GLenum err = glewInit();
@@ -125,10 +108,15 @@ void initGLEW()
 		system("pause");
 		exit(EXIT_FAILURE);
 	}
+	GLUtils::checkForOpenGLError(__FILE__, __LINE__); // Will throw error. Just ignore, glew bug.
+	GLUtils::dumpGLInfo();
 }
 void initializeGL()
 {
+	cout << "Initializing GL..." << endl;
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	GLUtils::checkForOpenGLError(__FILE__, __LINE__);
 }
 // Close OpenGL window and terminate GLFW  
 void closeApplication()
@@ -144,10 +132,21 @@ int main(void)
 	initGLEW();
 	initializeGL();
 
-	plane = new TessellatedQuad(window, 1);
-	plane->init();
+	tessellatedQuad = new TessellatedQuad(window, 1);
+	tessellatedQuad->init();
 
-	std::cout << std::endl << "Q: wireframe" << std::endl;
+	cout << endl << "Q: increase inner 0" << endl;
+	cout << "A: decrease inner 0" << endl;
+	cout << endl << "W: increase inner 1" << endl;
+	cout << "S: decrease inner 1" << endl;
+	cout << endl << "E: increase outer 0" << endl;
+	cout << "D: decrease outer 0" << endl;
+	cout << endl << "R: increase outer 1" << endl;
+	cout << "F: decrease outer 1" << endl;
+	cout << endl << "T: increase outer 2" << endl;
+	cout << "G: decrease outer 2" << endl;
+	cout << endl << "Y: increase outer 3" << endl;
+	cout << "H: decrease outer 3" << endl;
 
 	mainLoop();
 

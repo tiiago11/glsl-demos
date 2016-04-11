@@ -12,23 +12,23 @@
 #include <GLFW/glfw3.h>
 
 //Include the standard C++ headers 
+#include "GLUtils.h"
 #include "Scene.h"
 #include <cstdlib>
 #include <cstdio>
 #include <string>
 #include <iostream>
 #include "TessellatedQuad.h"
-
+#include "TextureManager.h"
 
 #define WINDOW_WIDTH	1000
 #define WINDOW_HEIGHT	1000
-
 
 using namespace std;
 
 Scene *tessellatedQuad;
 GLFWwindow* window;
-
+TextureManager* texManager;
 
 void mainLoop()
 {
@@ -36,6 +36,9 @@ void mainLoop()
 	double lastTime = glfwGetTime();
 	do
 	{
+		// Check for OpenGL errors
+		GLUtils::checkForOpenGLError(__FILE__, __LINE__);
+
 		// set deltatime and call update
 		thisTime = glfwGetTime();
 		tessellatedQuad->update(thisTime - lastTime);
@@ -65,6 +68,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 // Initialize GLFW  
 void initGLFW()
 {
+	cout << "Initializing GLFW..." << endl;
 	if (!glfwInit())
 	{
 		exit(EXIT_FAILURE);
@@ -77,7 +81,7 @@ void initGLFW()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
-	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "GLSL4.3 + GLM + VBO + VAO", NULL, NULL);
+	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "GLSL4.0 - Tessellation Displacement Mapping", NULL, NULL);
 	if (!window)
 	{
 		fprintf(stderr, "Failed to open GLFW window.\n");
@@ -94,6 +98,7 @@ void initCallbacks()
 }
 void initGLEW()
 {
+	cout << "Initializing GLEW..." << endl;
 	// Initialize GLEW
 	glewExperimental = GL_TRUE; //ensures that all extensions with valid entry points will be exposed.
 	GLenum err = glewInit();
@@ -103,11 +108,15 @@ void initGLEW()
 		system("pause");
 		exit(EXIT_FAILURE);
 	}
+	GLUtils::checkForOpenGLError(__FILE__, __LINE__); // Will throw error. Just ignore, glew bug.
+	GLUtils::dumpGLInfo();
 }
 void initializeGL()
 {
+	cout << "Initializing GL..." << endl;
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	GLUtils::checkForOpenGLError(__FILE__, __LINE__);
 }
 // Close OpenGL window and terminate GLFW  
 void closeApplication()
@@ -123,19 +132,25 @@ int main(void)
 	initGLEW();
 	initializeGL();
 
+	// Get a TextureManager's instance
+	texManager = TextureManager::Inst();
+	// Load our color texture with Id 0
+	if (!texManager->LoadTexture("resources/old_bricks_sharp_diff_COLOR.png", 0))
+		cout << "Failed to load texture." << endl;
+	// Load our displacement texture with Id 1
+	if (!texManager->LoadTexture("resources/old_bricks_sharp_diff_DISP.png", 1))
+		cout << "Failed to load texture." << endl;
+		
 	tessellatedQuad = new TessellatedQuad(window, 1);
 	tessellatedQuad->init();
 
-	cout << endl << "Q: increase inner" << endl;
-	cout << "A: decrease inner" << endl;
-	cout << "W: increase outer 0" << endl;
-	cout << "S: decrease outer 0" << endl;
-	cout << "E: increase outer 1" << endl;
-	cout << "D: decrease outer 1" << endl;
-	cout << "R: increase outer 2" << endl;
-	cout << "F: decrease outer 2" << endl;
-	cout << "T: increase outer 3" << endl;
-	cout << "G: decrease outer 3" << endl;
+	cout << endl << "Q: rotate around Y axis" << endl;
+	cout << "A:  rotate around Y axis" << endl;
+
+	cout << endl << "W: increase tess level" << endl;
+	cout << "S: decrease tess level" << endl;
+
+	cout << endl << "E: toggle wireframe" << endl;
 
 	mainLoop();
 
