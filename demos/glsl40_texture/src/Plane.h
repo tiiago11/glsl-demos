@@ -6,8 +6,7 @@
 #include "Scene.h"
 #include <vector>
 #include "glslprogram.h"
-
-#include "Bmp.h"
+#include "TextureManager.h"
 
 class Plane : public Scene {
 public:
@@ -22,7 +21,7 @@ public:
 private:
 	void genPlane();
 	void genBuffers();
-	void loadTexture();
+	void loadTextures();
 
 	GLuint vaoID;
 	int size;

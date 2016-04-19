@@ -36,28 +36,17 @@ Plane::Plane(GLFWwindow* window, int size){
 	glEnable(GL_CULL_FACE);
 }
 
-void Plane::loadTexture(){
-	// Load texture file
-	Bmp* img = new Bmp("..\\..\\resources\\lena.bmp");
-	img->convertBGRtoRGB();
-
-	GLubyte* data = img->getImage();
-	if (data != NULL){
-		glActiveTexture(GL_TEXTURE0);
-		GLuint texID;
-		glGenTextures(1, &texID);
-		glBindTexture(GL_TEXTURE_2D, texID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->getWidth(), img->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		delete data;
-	}
+void Plane::loadTextures(){
+	glActiveTexture(GL_TEXTURE0);
+	TextureManager::Inst()->LoadTexture("..\\..\\resources\\lena.bmp", 1);
+	glActiveTexture(GL_TEXTURE1);
+	TextureManager::Inst()->LoadTexture("..\\..\\resources\\textura.bmp", 2);
 }
 
 void Plane::init(){
 	genPlane();
 	genBuffers();
-	loadTexture();
+	loadTextures();
 }
 
 void Plane::update(double deltaTime){
@@ -94,7 +83,7 @@ void Plane::genBuffers(){
 	glBindBuffer(GL_ARRAY_BUFFER, handle[1]);
 	glBufferData(GL_ARRAY_BUFFER, texUV.size() * sizeof(vec2), (GLvoid*)&texUV[0], GL_STATIC_DRAW);
 	glVertexAttribPointer((GLuint)1, 2, GL_FLOAT, GL_FALSE, 0, ((GLubyte *)NULL + (0)));
-	glEnableVertexAttribArray(1);  // texture coords
+	glEnableVertexAttribArray(1);  // texture coords -> layout 1 in the VS
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle[2]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), (GLvoid*)&indices[0], GL_STATIC_DRAW);
