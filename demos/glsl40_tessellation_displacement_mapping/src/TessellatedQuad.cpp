@@ -126,10 +126,10 @@ void TessellatedQuad::processInput()
 	if (glfwGetKeyOnce(window, 'E')) {
 		wireframe = !wireframe;
 		if (wireframe) {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
 		else {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
 	}
 }

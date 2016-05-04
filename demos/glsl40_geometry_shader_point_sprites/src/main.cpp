@@ -8,7 +8,7 @@
 // Abril 2016 - Alex Frasson - afrasson@inf.ufsm.br
 
 //Include GLEW - always first 
-#include "GL/glew.h"
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 //Include the standard C++ headers 
@@ -18,15 +18,18 @@
 #include <cstdio>
 #include <string>
 #include <iostream>
-#include "TessellatedQuad.h"
+#include "PointSprites.h"
+
 
 #define WINDOW_WIDTH	1000
 #define WINDOW_HEIGHT	1000
 
+
 using namespace std;
 
-Scene *tessellatedQuad;
+Scene *pointSprites;
 GLFWwindow* window;
+
 
 void mainLoop()
 {
@@ -36,13 +39,12 @@ void mainLoop()
 	{
 		// Check for OpenGL errors
 		GLUtils::checkForOpenGLError(__FILE__, __LINE__);
-
 		// set deltatime and call update
 		thisTime = glfwGetTime();
-		tessellatedQuad->update(thisTime - lastTime);
+		pointSprites->update(thisTime - lastTime);
 		lastTime = thisTime;
 
-		tessellatedQuad->render();
+		pointSprites->render();
 
 		glfwSwapBuffers(window);
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...  
@@ -79,7 +81,7 @@ void initGLFW()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
-	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "GLSL4.0 - Tessellation Displacement Mapping", NULL, NULL);
+	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "GLSL4.3 + GLM + VBO + VAO", NULL, NULL);
 	if (!window)
 	{
 		fprintf(stderr, "Failed to open GLFW window.\n");
@@ -129,15 +131,9 @@ int main(void)
 	initCallbacks();
 	initGLEW();
 	initializeGL();
-		
-	tessellatedQuad = new TessellatedQuad(window, 1);
-	tessellatedQuad->init();
 
-	cout << endl << "Q: rotate around Y axis" << endl;
-	cout << "A:  rotate around Y axis" << endl;
-
-	cout << endl << "W: increase tess level" << endl;
-	cout << "S: decrease tess level" << endl;
+	pointSprites = new PointSprites(window, 20);
+	pointSprites->init();
 
 	cout << endl << "E: toggle wireframe" << endl;
 
