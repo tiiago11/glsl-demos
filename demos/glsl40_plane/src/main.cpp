@@ -6,7 +6,7 @@
 	-GL error detection
 	-glfwGetKeyOnce
 
-	August 2015 - Tiago Augusto Engel - tengel@inf.ufsm.br
+	May 2016 - Tiago Augusto Engel - tengel@inf.ufsm.br
 */
 
 
@@ -144,7 +144,7 @@ int main(void)
 	initGLEW();
 	initializeGL();
 
-	plane = new TessellatedQuad(window, 1);
+	plane = new Plane(window, 1);
 	plane->init();
 
 	std::cout << std::endl << "Q: wireframe" << std::endl;

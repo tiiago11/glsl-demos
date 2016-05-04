@@ -5,13 +5,13 @@
 
 using namespace std;
 
-TessellatedQuad::TessellatedQuad(GLFWwindow* window, int size){
+Plane::Plane(GLFWwindow* window, int size){
 	this->size = size;
 	this->window = window;
 	planePos = vec3(0.0f, 0.0f, 2.5f);
 }
 
-void TessellatedQuad::init(){
+void Plane::init(){
 	genPlane();
 	genBuffers();
 
@@ -39,7 +39,7 @@ void TessellatedQuad::init(){
 	shader.printActiveAttribs();
 }
 
-void TessellatedQuad::update(double deltaTime){
+void Plane::update(double deltaTime){
 
 	//// matrices setup
 	modelMatrix = mat4(1.0f); // identity
@@ -51,7 +51,7 @@ void TessellatedQuad::update(double deltaTime){
 	shader.setUniform("MVP", modelViewProjectionMatrix); //ModelViewProjection
 }
 
-void TessellatedQuad::render(){
+void Plane::render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glBindVertexArray(vaoID);
@@ -59,7 +59,7 @@ void TessellatedQuad::render(){
 	glBindVertexArray(0);
 }
 
-void TessellatedQuad::genBuffers(){
+void Plane::genBuffers(){
 
 	glGenVertexArrays(1, &vaoID);
 	glBindVertexArray(vaoID);
@@ -83,11 +83,11 @@ void TessellatedQuad::genBuffers(){
 	glBindVertexArray(0);
 }
 
-void TessellatedQuad::resize(int x, int y){
+void Plane::resize(int x, int y){
 
 }
 
-void TessellatedQuad::genPlane()
+void Plane::genPlane()
 {
 	// v0 -- bottom left
 	vertices.push_back(vec3(-size, -size, 0.0f));

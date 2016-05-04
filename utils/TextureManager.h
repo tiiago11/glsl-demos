@@ -21,9 +21,7 @@ public:
 	static TextureManager* Inst();
 	virtual ~TextureManager();
 
-
 	glm::vec3 size;
-
 
 	//load a texture an make it the current texture
 	//if texID is already in use, it will be unloaded and replaced with this texture
@@ -44,10 +42,11 @@ public:
 	//free all texture memory
 	void UnloadAllTextures();
 
+	void printImageType(FREE_IMAGE_TYPE type);
+
+	void printImageColorType(FREE_IMAGE_COLOR_TYPE type);
 protected:
 	TextureManager();
-	TextureManager(const TextureManager& tm);
-	TextureManager& operator=(const TextureManager& tm);
 
 	static TextureManager* m_inst;
 	std::map<unsigned int, GLuint> m_texID;

@@ -19,7 +19,6 @@
 #include <string>
 #include <iostream>
 #include "TessellatedQuad.h"
-#include "TextureManager.h"
 
 #define WINDOW_WIDTH	1000
 #define WINDOW_HEIGHT	1000
@@ -28,7 +27,6 @@ using namespace std;
 
 Scene *tessellatedQuad;
 GLFWwindow* window;
-TextureManager* texManager;
 
 void mainLoop()
 {
@@ -131,15 +129,6 @@ int main(void)
 	initCallbacks();
 	initGLEW();
 	initializeGL();
-
-	// Get a TextureManager's instance
-	texManager = TextureManager::Inst();
-	// Load our color texture with Id 0
-	if (!texManager->LoadTexture("resources/old_bricks_sharp_diff_COLOR.png", 0))
-		cout << "Failed to load texture." << endl;
-	// Load our displacement texture with Id 1
-	if (!texManager->LoadTexture("resources/old_bricks_sharp_diff_DISP.png", 1))
-		cout << "Failed to load texture." << endl;
 		
 	tessellatedQuad = new TessellatedQuad(window, 1);
 	tessellatedQuad->init();

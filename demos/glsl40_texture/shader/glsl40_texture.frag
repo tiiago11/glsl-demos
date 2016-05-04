@@ -1,8 +1,15 @@
-#version 420
+/*
+	Recebe a coordenada de textura do VS (note que ela foi interpolada).
+	 
+	 Ao inves de utilizar layout (binding = 0), pode-se tambem utilizar
+	 shader.setUniform("Texture1", 0). Porem a ultima demanda que chame
+	 bind na textura em cada render (demo de tessellation usa a segunda maneira)
+*/
+#version 420 //  layout (binding = XXX) demanda >= 420
 
 in vec2 TexCoord; // Coordenada de textura enviada pelo FS
-layout (binding = 0) uniform sampler2D Texture1; // binding = 0  equivalente a GL_TEXTURE0
-layout (binding = 1) uniform sampler2D Texture2; // binding = 1  equivalente a GL_TEXTURE1
+layout (binding = 0) uniform sampler2D Texture1; // binding = 0 eh equivalente a GL_TEXTURE0.
+layout (binding = 1) uniform sampler2D Texture2; // binding = 1 eh equivalente a GL_TEXTURE1.
 layout (location = 0) out vec4 FragColor;
 
 void main() 

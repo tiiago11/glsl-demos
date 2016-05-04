@@ -17,9 +17,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="README.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="shaders">
       <UniqueIdentifier>{3e689de1-2229-4d73-b698-1d17a5341c27}</UniqueIdentifier>
     </Filter>

@@ -1,3 +1,6 @@
+/*
+	Transforma o vertice e passa a coordenada de textura para o FS.
+*/
 #version 400
 
 layout (location=0) in vec3 VertexPosition;

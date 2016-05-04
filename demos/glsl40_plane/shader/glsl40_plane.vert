@@ -1,3 +1,7 @@
+/*
+	Recebe a posicao do vertice e sua respectiva cor.
+	Transforma o vertice e passa a cor para o FS
+*/
 #version 400
 
 layout (location=0) in vec3 VertexPosition;

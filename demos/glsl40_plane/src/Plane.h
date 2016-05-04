@@ -7,10 +7,10 @@
 #include <vector>
 #include "glslprogram.h"
 
-class TessellatedQuad : public Scene
+class Plane : public Scene
 {
 public:
-	TessellatedQuad(GLFWwindow* window, int size = 1);
+	Plane(GLFWwindow* window, int size = 1);
 
 	// mesh virtual functions
 	void init();

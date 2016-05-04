@@ -3,6 +3,7 @@
 #include <glm/gtx/transform.hpp>
 #include <iostream>
 #include "TextureManager.h"
+#include "GLUtils.h"
 
 using namespace std;
 
@@ -12,6 +13,8 @@ char keyOnce[GLFW_KEY_LAST + 1];
     (glfwGetKey(WINDOW, KEY) ?              \
      (keyOnce[KEY] ? false : (keyOnce[KEY] = true)) :   \
      (keyOnce[KEY] = false))
+
+TextureManager* texManager;
 
 TessellatedQuad::TessellatedQuad(GLFWwindow* window, int size)
 {
@@ -53,6 +56,19 @@ void TessellatedQuad::init()
 		exit(EXIT_FAILURE);
 	}
 	shader.printActiveAttribs();
+	
+	// Get a TextureManager's instance
+	texManager = TextureManager::Inst();
+
+	// Load our color texture with Id 0
+	glActiveTexture(GL_TEXTURE0);
+	if (!texManager->LoadTexture("..\\..\\resources\\old_bricks_sharp_diff_COLOR.png", 0))
+		cout << "Failed to load texture." << endl;
+	
+	// Load our displacement texture with Id 1
+	glActiveTexture(GL_TEXTURE1);	
+	if (!texManager->LoadTexture("..\\..\\resources\\old_bricks_sharp_diff_DISP.png", 1))
+		cout << "Failed to load texture." << endl;
 }
 
 void TessellatedQuad::update(double deltaTime)
@@ -74,7 +90,6 @@ void TessellatedQuad::update(double deltaTime)
 
 	shader.setUniform("displacementmapSampler", 1);
 	shader.setUniform("colorTextureSampler", 0);
-	
 }
 
 void TessellatedQuad::processInput()
@@ -123,14 +138,12 @@ void TessellatedQuad::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	// Bind both textures
-	// Color
-	glEnable(GL_TEXTURE_2D);
-	glActiveTextureARB(GL_TEXTURE0);
+	//// Bind both textures
+	//// Color
+	glActiveTexture(GL_TEXTURE0);
 	TextureManager::Inst()->BindTexture(0);
-	// Displacement
-	glEnable(GL_TEXTURE_2D);
-	glActiveTextureARB(GL_TEXTURE1);
+	//// Displacement
+	glActiveTexture(GL_TEXTURE1);
 	TextureManager::Inst()->BindTexture(1);
 	
 	glBindVertexArray(vaoID);
