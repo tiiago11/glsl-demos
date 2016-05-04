@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl40_tessellation_displac
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl40_texture", "demos\glsl40_texture\glsl40_texture.vcxproj.vcxproj", "{B6ED92FC-9A34-49B3-92F3-1C55D60A8759}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl40_toon", "demos\glsl40_toon\glsl40_toon.vcxproj", "{469021DE-0F85-4E0C-8A8C-FB1975DF4F65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{B6ED92FC-9A34-49B3-92F3-1C55D60A8759}.Release|x64.Build.0 = Release|x64
 		{B6ED92FC-9A34-49B3-92F3-1C55D60A8759}.Release|x86.ActiveCfg = Release|Win32
 		{B6ED92FC-9A34-49B3-92F3-1C55D60A8759}.Release|x86.Build.0 = Release|Win32
+		{469021DE-0F85-4E0C-8A8C-FB1975DF4F65}.Debug|x64.ActiveCfg = Debug|x64
+		{469021DE-0F85-4E0C-8A8C-FB1975DF4F65}.Debug|x64.Build.0 = Debug|x64
+		{469021DE-0F85-4E0C-8A8C-FB1975DF4F65}.Debug|x86.ActiveCfg = Debug|Win32
+		{469021DE-0F85-4E0C-8A8C-FB1975DF4F65}.Debug|x86.Build.0 = Debug|Win32
+		{469021DE-0F85-4E0C-8A8C-FB1975DF4F65}.Release|x64.ActiveCfg = Release|x64
+		{469021DE-0F85-4E0C-8A8C-FB1975DF4F65}.Release|x64.Build.0 = Release|x64
+		{469021DE-0F85-4E0C-8A8C-FB1975DF4F65}.Release|x86.ActiveCfg = Release|Win32
+		{469021DE-0F85-4E0C-8A8C-FB1975DF4F65}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

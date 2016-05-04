@@ -274,7 +274,7 @@ bool TextureManager::BindTexture(const unsigned int texID)
 	else
 		result = false;
 	
-	GLUtils::checkForOpenGLError(__FILE__, __LINE__); // Will throw error. Just ignore, glew bug.
+	GLUtils::checkForOpenGLError(__FILE__, __LINE__);
 
 	return result;
 }
