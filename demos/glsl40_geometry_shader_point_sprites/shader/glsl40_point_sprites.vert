@@ -1,7 +1,8 @@
 // Vertex Shader
 //
-// Como as tranformções serão aplicadas somente no estágio Tessellation Evaluation Shader, este
-// vertex shader apenas passa os vértices de entrada adiante para o Tessellation Control Shader.
+// Este vertex shader é extremamente simples. Ele apenas converte a posição do vértice utilizando
+// a matriz ModelView. Também é passado adiante uma cor para cada vértice. A cor é determinada pela
+// posição do vértice.
 //
 // Abril 2016 - Alex Frasson - afrasson@inf.ufsm.br
 

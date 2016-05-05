@@ -1,9 +1,11 @@
-// Basic Tessellation Demo
+// Geometry Shader Point Sprites
 //
-// Este programa é uma demonstrção da utilização de Tessellation em OpenGL.
-// Um quadrado é enviado para GPU e subdividido em tempo real. O usuário pode
-// controlar o número de subdivisões utilizando as teclas 'Q', 'A', 'W', 'S', 
-//'E', 'D', 'R', 'F', 'T' e 'G'.
+// Point sprites são quadriláteros simples que são alinhados de tal 
+// modo que eles estão sempre de frente para a câmara. Este programa 
+// é uma demonstração da geração de point sprites através do Geometry Shader.
+// Vários pontos são enviados para GPU e, a partir de cada ponto, é gerado um 
+// quadrad.
+// O usuário pode alternar entre a wireframe e fill utilizando a tecla 'E'.
 //
 // Abril 2016 - Alex Frasson - afrasson@inf.ufsm.br
 
@@ -81,7 +83,7 @@ void initGLFW()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
-	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "GLSL4.3 + GLM + VBO + VAO", NULL, NULL);
+	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "GLSL4.0 + Point Sprites", NULL, NULL);
 	if (!window)
 	{
 		fprintf(stderr, "Failed to open GLFW window.\n");
