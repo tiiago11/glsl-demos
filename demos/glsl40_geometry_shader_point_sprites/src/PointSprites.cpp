@@ -6,6 +6,7 @@
 #include <chrono>
 
 using namespace std;
+float currTime = 0;
 
 //add to glfwGetKey that gets the pressed key only once (not several times)
 char keyOnce[GLFW_KEY_LAST + 1];
@@ -56,6 +57,11 @@ void PointSprites::init()
 void PointSprites::update(double deltaTime)
 {
 	processInput();
+	if (currTime > 0.5f) {
+		updateVBOData();
+		currTime = 0.0f;
+	}
+	currTime += deltaTime;
 
 	//// matrices setup
 	modelMatrix = mat4(1.0f); // identity
@@ -88,19 +94,28 @@ void PointSprites::render()
 
 	glBindVertexArray(vaoID);
 	glDrawElements(GL_POINTS, indices.size(), GL_UNSIGNED_INT, (GLubyte *)NULL);
-	glBindVertexArray(0);
+	glBindVertexArray(0);	
+}
+
+void PointSprites::updateVBOData()
+{
+	vertices.clear();
+	genPoints();
+
+	glBindBuffer(GL_ARRAY_BUFFER, handle[0]);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(vec3), (GLvoid*)&vertices[0]);      //replace data in VBO with new data
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void PointSprites::genBuffers()
 {
 	glGenVertexArrays(1, &vaoID);
 	glBindVertexArray(vaoID);
-
-	unsigned int handle[2];
+	
 	glGenBuffers(2, handle);
 
 	glBindBuffer(GL_ARRAY_BUFFER, handle[0]);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), (GLvoid*)&vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), (GLvoid*)&vertices[0], GL_DYNAMIC_DRAW);
 	glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL);
 	glEnableVertexAttribArray(0);  // Vertex position -> layout 0 in the VS
 

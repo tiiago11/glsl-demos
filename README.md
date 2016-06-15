@@ -1,1 +1,3 @@
-# cga-demos
+# glsl-demos
+
+Some useful GLSL demos =)

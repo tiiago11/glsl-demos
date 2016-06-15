@@ -22,8 +22,10 @@ private:
 	void genPoints();
 	void genBuffers();
 	void processInput();
+	void updateVBOData();
 
 	GLuint vaoID;
+	unsigned int handle[2];
 	int numPoints;
 	std::vector<vec3> vertices;
 	std::vector<unsigned int> indices;
