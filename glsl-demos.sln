@@ -15,7 +15,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl40_toon", "demos\glsl40
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl40_geometry_shader_point_sprites", "demos\glsl40_geometry_shader_point_sprites\glsl40_geometry_shader_point_sprites.vcxproj", "{41A4E1E9-7101-406D-B3A5-32CF40195ED6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl40_shadowVolume", "demos\glsl40_shadowVolume\glsl40_shadowVolume.vcxproj", "{3D9B6386-FD7C-405C-B50A-42EF3AF86BAC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl40_silhouette_stencil", "demos\glsl40_silhouette_stencil\glsl40_silhouette_stencil.vcxproj", "{3D9B6386-FD7C-405C-B50A-42EF3AF86BAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

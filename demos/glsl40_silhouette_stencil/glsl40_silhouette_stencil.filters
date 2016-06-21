@@ -9,10 +9,10 @@
     <ClInclude Include="src\Plane.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\glsl40_shadowVolume.frag">
+    <None Include="shader\glsl40_silhouette_stencil.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shader\glsl40_shadowVolume.vert">
+    <None Include="shader\glsl40_silhouette_stencil.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

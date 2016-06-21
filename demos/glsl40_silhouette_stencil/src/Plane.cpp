@@ -25,8 +25,8 @@ void Plane::init(){
 
 	// load shaders
 	try {
-		shader.compileShader("shader/glsl40_shadowVolume.vert");
-		shader.compileShader("shader/glsl40_shadowVolume.frag");
+		shader.compileShader("shader/glsl40_silhouette_stencil.vert");
+		shader.compileShader("shader/glsl40_silhouette_stencil.frag");
 
 		shader.link();
 		shader.use();
@@ -37,11 +37,29 @@ void Plane::init(){
 		exit(EXIT_FAILURE);
 	}
 	shader.printActiveAttribs();
+
+	// Setup some stencil options
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+	glEnable(GL_STENCIL_TEST);
+	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 }
 
 void Plane::update(double deltaTime){
+}
 
-	//// matrices setup
+void Plane::render(){
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	//////////////////////////
+	////////////////////////// first draw: enable stencil write
+	//////////////////////////
+	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	glStencilMask(0xFF);
+
+	// matrices setup
 	modelMatrix = mat4(1.0f); // identity
 	modelMatrix = glm::translate(modelMatrix, planePos); // translate back
 	modelViewMatrix = viewMatrix * modelMatrix;
@@ -49,14 +67,40 @@ void Plane::update(double deltaTime){
 
 	// set var MVP on the shader
 	shader.setUniform("MVP", modelViewProjectionMatrix); //ModelViewProjection
-}
-
-void Plane::render(){
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	shader.setUniform("useSingleColor", false);
 
 	glBindVertexArray(vaoID);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLubyte *)NULL);
 	glBindVertexArray(0);
+
+	glStencilMask(0xFF);
+	glEnable(GL_DEPTH_TEST);
+	
+	//////////////////////////
+	////////////////////////// second draw - scale the same object and draw again where the stencil mask is different than 1
+	//////////////////////////
+
+	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+	glStencilMask(0x00);
+	glDisable(GL_DEPTH_TEST);
+
+	//// matrices setup
+	modelMatrix = mat4(1.0f); // identity
+	modelMatrix = glm::translate(modelMatrix, planePos); // translate back
+	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.1,1.1,1));
+	modelViewMatrix = viewMatrix * modelMatrix;
+	modelViewProjectionMatrix = projectionMatrix * modelViewMatrix;
+
+	// set var MVP on the shader
+	shader.setUniform("MVP", modelViewProjectionMatrix); //ModelViewProjection
+	shader.setUniform("useSingleColor", true);
+
+	glBindVertexArray(vaoID);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLubyte *)NULL);
+	glBindVertexArray(0);
+	
+	glStencilMask(0xFF);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Plane::genBuffers(){
