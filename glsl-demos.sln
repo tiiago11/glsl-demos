@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl40_geometry_shader_poin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl40_silhouette_stencil", "demos\glsl40_silhouette_stencil\glsl40_silhouette_stencil.vcxproj", "{3D9B6386-FD7C-405C-B50A-42EF3AF86BAC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl40_silhouette_stencil_glow", "demos\glsl40_silhouette_stencil_glow\glsl40_silhouette_stencil_glow.vcxproj", "{96A9A50E-ADC0-4581-86E5-1A8B5820A9DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,14 @@ Global
 		{3D9B6386-FD7C-405C-B50A-42EF3AF86BAC}.Release|x64.Build.0 = Release|x64
 		{3D9B6386-FD7C-405C-B50A-42EF3AF86BAC}.Release|x86.ActiveCfg = Release|Win32
 		{3D9B6386-FD7C-405C-B50A-42EF3AF86BAC}.Release|x86.Build.0 = Release|Win32
+		{96A9A50E-ADC0-4581-86E5-1A8B5820A9DB}.Debug|x64.ActiveCfg = Debug|x64
+		{96A9A50E-ADC0-4581-86E5-1A8B5820A9DB}.Debug|x64.Build.0 = Debug|x64
+		{96A9A50E-ADC0-4581-86E5-1A8B5820A9DB}.Debug|x86.ActiveCfg = Debug|Win32
+		{96A9A50E-ADC0-4581-86E5-1A8B5820A9DB}.Debug|x86.Build.0 = Debug|Win32
+		{96A9A50E-ADC0-4581-86E5-1A8B5820A9DB}.Release|x64.ActiveCfg = Release|x64
+		{96A9A50E-ADC0-4581-86E5-1A8B5820A9DB}.Release|x64.Build.0 = Release|x64
+		{96A9A50E-ADC0-4581-86E5-1A8B5820A9DB}.Release|x86.ActiveCfg = Release|Win32
+		{96A9A50E-ADC0-4581-86E5-1A8B5820A9DB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
