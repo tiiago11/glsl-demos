@@ -29,6 +29,7 @@
     <ClInclude Include="src\Plane.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shader\blur.frag" />
     <None Include="shader\glsl40_silhouette_stencil_glow.frag">
       <FileType>Document</FileType>
     </None>

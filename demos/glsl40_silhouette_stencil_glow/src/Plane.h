@@ -24,9 +24,10 @@ private:
 
 	GLuint setupFBO(GLenum texSlot);
 	void renderOutline();
+	void applyFilter();
 
 	GLuint vaoID;
-	GLuint fboID;
+	GLuint fboIDs[2];
 	int size;
 	std::vector<vec3> vertices;
 	std::vector<vec3> normals;
@@ -36,8 +37,9 @@ private:
 
 	GLSLProgram shader;
 	GLSLProgram outlineShader;
-	GLFWwindow* window;
+	GLSLProgram blurShader;
 
+	GLFWwindow* window;
 	glm::mat4 modelMatrix;
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;

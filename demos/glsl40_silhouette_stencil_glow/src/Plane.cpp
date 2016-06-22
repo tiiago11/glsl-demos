@@ -14,7 +14,7 @@ using namespace std;
 Plane::Plane(GLFWwindow* window, int size){
 	this->size = size;
 	this->window = window;
-	planePos = vec3(0.0f, 0.0f, 2.5f);
+	planePos = vec3(0.0f, 0.0f, 2.0f);
 }
 
 void Plane::init(){
@@ -33,11 +33,17 @@ void Plane::init(){
 	try {
 		shader.compileShader("shader/glsl40_silhouette_stencil_glow.vert");
 		shader.compileShader("shader/glsl40_silhouette_stencil_glow.frag");
+		
+		outlineShader.compileShader("shader/glsl40_silhouette_stencil_glow.vert");
 		outlineShader.compileShader("shader/glsl40_outline.frag");
 
-		outlineShader.link();
+		blurShader.compileShader("shader/glsl40_silhouette_stencil_glow.vert");
+		blurShader.compileShader("shader/blur.frag");
 
+		blurShader.link();
+		outlineShader.link();
 		shader.link();
+
 		shader.use();
 	}
 	catch (GLSLProgramException &e) {
@@ -54,13 +60,15 @@ void Plane::init(){
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-	glActiveTexture(GL_TEXTURE1);
+	fboIDs[0] = setupFBO(GL_TEXTURE0);
+	fboIDs[1] = setupFBO(GL_TEXTURE1);
+
+	glActiveTexture(GL_TEXTURE2);
 	if (!TextureManager::Inst()->LoadTexture("..\\..\\resources\\lena.bmp", 1))
 		std::cout << "Failed to load texture." << std::endl;
 
-	fboID = setupFBO(GL_TEXTURE0);
-
 	renderOutline();
+	applyFilter();
 }
 
 GLuint Plane::setupFBO(GLenum texSlot) {
@@ -115,15 +123,17 @@ GLuint Plane::setupFBO(GLenum texSlot) {
 }
 
 void Plane::renderOutline() {
-	glBindFramebuffer(GL_FRAMEBUFFER, fboID);
+	glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[0]);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-	//////////////////////////
-	////////////////////////// first draw: enable stencil write
-	//////////////////////////
+	////////////////////////
+	//////////////////////// first draw: enable stencil write
+	////////////////////////
+	shader.use();
+
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilMask(0xFF);
 
@@ -143,9 +153,9 @@ void Plane::renderOutline() {
 	glStencilMask(0xFF);
 	glEnable(GL_DEPTH_TEST);
 
-	//////////////////////////
-	////////////////////////// second draw - scale the same object and draw again where the stencil mask is different than 1
-	//////////////////////////
+	////////////////////////
+	//////////////////////// second draw - scale the same object and draw again where the stencil mask is different than 1
+	////////////////////////
 	outlineShader.use();
 
 	glClear(GL_COLOR_BUFFER_BIT); // we only want the stencil
@@ -157,9 +167,8 @@ void Plane::renderOutline() {
 	//// matrices setup
 	modelMatrix = mat4(1.0f); // identity
 	modelMatrix = glm::translate(modelMatrix, planePos); // translate back
-	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.01, 1.01, 1));
+	modelMatrix = glm::scale(modelMatrix, glm::vec3(1.1, 1.1, 1));
 	modelViewMatrix = viewMatrix * modelMatrix;
-	projectionMatrix = glm::ortho(0, 1, 0, 1);
 	modelViewProjectionMatrix = projectionMatrix * modelViewMatrix;
 
 	// set var MVP on the shader
@@ -172,10 +181,36 @@ void Plane::renderOutline() {
 	glStencilMask(0xFF);
 	glEnable(GL_DEPTH_TEST);
 
-	glDisable(GL_STENCIL_TEST);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void Plane::applyFilter() {
+	GLuint amount = 1;
+	
+	blurShader.use();
+
+	for (GLuint i = 0; i < amount; i++)
+	{
+		int fbo = i % 2 == 0;
+		glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[fbo]);
+
+		// matrices setup
+		modelMatrix = mat4(1.0f); // identity
+		modelMatrix = glm::translate(modelMatrix, planePos); // translate back
+		//modelMatrix = glm::scale(modelMatrix, vec3(5, 5, 1));
+		modelViewMatrix = viewMatrix * modelMatrix;
+		modelViewProjectionMatrix = projectionMatrix * modelViewMatrix;
+
+		// set var MVP on the shader
+		blurShader.setUniform("MVP", modelViewProjectionMatrix); //ModelViewProjections
+		blurShader.setUniform("MainTex", 0);
+
+		glBindVertexArray(vaoID);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLubyte *)NULL);
+		glBindVertexArray(0);
+	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	shader.use();
 }
 
 void Plane::update(double deltaTime){
@@ -191,16 +226,17 @@ void Plane::update(double deltaTime){
 }
 
 void Plane::render(){
+	shader.use();
 
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	projectionMatrix = glm::perspective(glm::radians(60.0f), 1.0f, 0.1f, 100.0f);
+	//shader.setUniform("OutlineTex", 0);
 
 	//////////////////////////
 	////////////////////////// first draw: enable stencil write
 	//////////////////////////
-
 
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilMask(0xFF);

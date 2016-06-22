@@ -20,6 +20,9 @@
     <None Include="shader\glsl40_outline.frag">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shader\blur.frag">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="shaders">

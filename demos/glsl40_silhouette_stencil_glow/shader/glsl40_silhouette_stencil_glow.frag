@@ -6,7 +6,7 @@ layout (location=0) out vec4 FragColor;
 
 
 layout (binding = 0) uniform sampler2D OutlineTex; 
-layout (binding = 1) uniform sampler2D MainTex;
+layout (binding = 2) uniform sampler2D MainTex;
 
 uniform bool isOutline;
 /*
@@ -43,7 +43,7 @@ void main()
 	FragColor = outlineColor;
 
 	//if(outlineColor.a == 1.0)
-	//	FragColor = vec4(0,1,0,1);
+		//FragColor = vec4(0,1,0,1);
 	//else 
 	//	FragColor = vec4(0,0,1,1);
 	
